@@ -19,3 +19,28 @@ export function getColorListElement() {
 export function getInActiveColorList() {
   return document.querySelectorAll('#colorList > li:not(.active)')
 }
+
+export function createTimer({ seconds, onChange, onFinish }) {
+  let intervalId = null
+
+  function start() {
+    clear()
+    let currentSecond = seconds
+    intervalId = setInterval(() => {
+      onChange?.(currentSecond)
+      currentSecond--
+      if (currentSecond < 0) {
+        clear()
+        onFinish?.()
+      }
+    }, 1000)
+  }
+
+  function clear() {
+    clearInterval(intervalId)
+  }
+  return {
+    start,
+    clear,
+  }
+}
